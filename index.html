@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finanzas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="shell">
+
+<aside class="sidebar">
+  <div class="brand">
+    <span class="brand-mark">F</span>
+    <span class="brand-name">Finanzas</span>
+  </div>
+
+  <div class="year-switch" id="yearSwitch">
+    <button data-year="2026" class="active">2026</button>
+    <button data-year="2027">2027</button>
+  </div>
+
+  <nav class="tabs" id="tabs">
+    <button data-tab="resumen" class="tab active"><span class="dot dot-resumen"></span>Resumen</button>
+    <button data-tab="ingresos" class="tab"><span class="dot dot-ingresos"></span>Ingresos</button>
+    <button data-tab="gastos" class="tab"><span class="dot dot-gastos"></span>Gastos</button>
+    <button data-tab="tarjetas" class="tab"><span class="dot dot-tarjetas"></span>Tarjetas</button>
+    <button data-tab="prestamos" class="tab"><span class="dot dot-prestamos"></span>Prestamos</button>
+    <button data-tab="rapipago" class="tab"><span class="dot dot-rapipago"></span>Rapipago</button>
+    <button data-tab="impuestos" class="tab"><span class="dot dot-impuestos"></span>Impuestos</button>
+    <button data-tab="babypas" class="tab"><span class="dot dot-babypas"></span>Babypas</button>
+    <button data-tab="ahorros" class="tab"><span class="dot dot-ahorros"></span>Ahorros</button>
+  </nav>
+</aside>
+
+<main id="app">
+
+  <section id="view-resumen" class="view active">
+    <h1 class="view-title">Resumen del mes</h1>
+    <div class="cards" id="resumenCards"></div>
+    <div class="panel">
+      <h3>Gastos por persona</h3>
+      <div id="gastosPorPersona" class="bars"></div>
+    </div>
+  </section>
+
+  <section id="view-ingresos" class="view">
+    <h1 class="view-title">Ingresos</h1>
+    <p class="hint">Alquileres (local, casa, depto), jubilacion y otros ingresos del mes.</p>
+    <div class="panel">
+      <h3>Cargar ingreso</h3>
+      <form id="formIngresos" class="form-grid">
+        <label>Descripcion<input name="descripcion" placeholder="Ej: Alquiler depto" required></label>
+        <label>Tipo<input name="tipo" placeholder="local / jubil / casa / depto / rapi / jose" required></label>
+        <label>Propiedad (si aplica)<select name="propiedad_id" id="propiedadSelectIngreso"><option value="">Ninguna</option></select></label>
+        <label>Monto<input name="monto" type="number" step="0.01" placeholder="0.00" required></label>
+        <label>Mes<input name="mes" type="number" min="1" max="12" placeholder="1-12" required></label>
+        <button type="submit">Agregar</button>
+      </form>
+    </div>
+    <div class="panel"><table class="tbl" id="tblIngresos"></table></div>
+  </section>
+
+  <section id="view-gastos" class="view">
+    <h1 class="view-title">Gastos</h1>
+    <div class="panel">
+      <h3>Cargar gasto</h3>
+      <form id="formGastos" class="form-grid">
+        <label>Persona<select name="persona_id" id="personaSelectGasto"></select></label>
+        <label>Descripcion<input name="descripcion" placeholder="Descripcion" required></label>
+        <label>Monto<input name="monto" type="number" step="0.01" placeholder="0.00" required></label>
+        <label>Mes<input name="mes" type="number" min="1" max="12" placeholder="1-12" required></label>
+        <button type="submit">Agregar</button>
+      </form>
+    </div>
+    <div class="panel"><table class="tbl" id="tblGastos"></table></div>
+  </section>
+
+  <section id="view-tarjetas" class="view">
+    <h1 class="view-title">Tarjetas</h1>
+    <p class="hint">Por persona y banco. El total se suma solo en el Resumen.</p>
+    <div class="panel">
+      <h3>Cargar consumo de tarjeta</h3>
+      <form id="formTarjetas" class="form-grid">
+        <label>Persona<select name="persona_id" id="personaSelectTarjeta"></select></label>
+        <label>Banco<input name="banco" placeholder="Ej: Galicia Visa"></label>
+        <label>Descripcion<input name="descripcion" placeholder="Descripcion" required></label>
+        <label>Monto<input name="monto" type="number" step="0.01" placeholder="0.00" required></label>
+        <label>Mes<input name="mes" type="number" min="1" max="12" placeholder="1-12" required></label>
+        <button type="submit">Agregar</button>
+      </form>
+    </div>
+    <div class="panel"><table class="tbl" id="tblTarjetas"></table></div>
+  </section>
+
+  <section id="view-prestamos" class="view">
+    <h1 class="view-title">Prestamos</h1>
+    <p class="hint">Detalle cuota por cuota. El total del mes se calcula solo en el Resumen.</p>
+    <div class="panel">
+      <h3>Cargar prestamo</h3>
+      <form id="formPrestamos" class="form-grid">
+        <label>Persona<select name="persona_id" id="personaSelectPrestamo"></select></label>
+        <label>Descripcion<input name="descripcion" placeholder="Ej: Ecosport" required></label>
+        <label>Banco<input name="banco" placeholder="Banco"></label>
+        <label>Monto cuota<input name="cuota_monto" type="number" step="0.01" placeholder="0.00" required></label>
+        <label>Cuotas totales<input name="cuotas_totales" type="number" placeholder="Ej: 36" required></label>
+        <label>Cuotas pagadas<input name="cuotas_pagadas" type="number" placeholder="0" value="0"></label>
+        <label>Fecha inicio<input name="fecha_inicio" type="date" required></label>
+        <button type="submit">Agregar</button>
+      </form>
+    </div>
+    <div class="panel"><table class="tbl" id="tblPrestamos"></table></div>
+  </section>
+
+  <section id="view-rapipago" class="view">
+    <h1 class="view-title">Rapipago</h1>
+    <p class="hint">Deuda aparte de las tarjetas y los prestamos bancarios.</p>
+    <div class="panel">
+      <h3>Cargar cuota de Rapipago</h3>
+      <form id="formRapipago" class="form-grid">
+        <label>Descripcion<input name="descripcion" placeholder="Descripcion" required></label>
+        <label>Monto<input name="monto" type="number" step="0.01" placeholder="0.00" required></label>
+        <label>Mes<input name="mes" type="number" min="1" max="12" placeholder="1-12" required></label>
+        <button type="submit">Agregar</button>
+      </form>
+    </div>
+    <div class="panel"><table class="tbl" id="tblRapipago"></table></div>
+  </section>
+
+  <section id="view-impuestos" class="view">
+    <h1 class="view-title">Impuestos</h1>
+    <p class="hint">Generales (seguros, AFIP, celulares) y por propiedad (Las Heras, Godoy Cruz, Depto).</p>
+    <div class="panel">
+      <h3>Cargar impuesto</h3>
+      <form id="formImpuestos" class="form-grid">
+        <label>Descripcion<input name="descripcion" placeholder="Ej: Monotributo, ATM Godoy Cruz" required></label>
+        <label>Propiedad (si aplica)<select name="propiedad_id" id="propiedadSelectImpuesto"><option value="">General</option></select></label>
+        <label>Monto<input name="monto" type="number" step="0.01" placeholder="0.00" required></label>
+        <label>Mes<input name="mes" type="number" min="1" max="12" placeholder="1-12" required></label>
+        <button type="submit">Agregar</button>
+      </form>
+    </div>
+    <div class="panel"><table class="tbl" id="tblImpuestos"></table></div>
+  </section>
+
+  <section id="view-babypas" class="view">
+    <h1 class="view-title">Babypas</h1>
+    <p class="hint">Cuenta compartida con tu pareja: items en cuotas y el debe/haber del dia a dia.</p>
+
+    <div class="panel">
+      <h3>Cargar item en cuotas</h3>
+      <form id="formBabypas" class="form-grid">
+        <label>Descripcion<input name="descripcion" placeholder="Descripcion" required></label>
+        <label>Monto total<input name="monto_total" type="number" step="0.01" placeholder="0.00" required></label>
+        <label>Cantidad de cuotas<input name="cuotas_totales" type="number" placeholder="Ej: 6" required></label>
+        <label>Fecha inicio<input name="fecha_inicio" type="date" required></label>
+        <button type="submit">Agregar</button>
+      </form>
+    </div>
+    <div id="babypasList"></div>
+
+    <div class="panel">
+      <h3>Debe / Haber del dia a dia</h3>
+      <form id="formBabypasMov" class="form-grid">
+        <label>Fecha<input name="fecha" type="date" required></label>
+        <label>Descripcion<input name="descripcion" placeholder="Descripcion" required></label>
+        <label>Debe<input name="debe" type="number" step="0.01" value="0"></label>
+        <label>Haber<input name="haber" type="number" step="0.01" value="0"></label>
+        <button type="submit">Agregar</button>
+      </form>
+    </div>
+    <div class="panel">
+      <div class="saldo-row" id="babypasSaldo"></div>
+      <table class="tbl" id="tblBabypasMov"></table>
+    </div>
+  </section>
+
+  <section id="view-ahorros" class="view">
+    <h1 class="view-title">Ahorros</h1>
+    <div class="panel">
+      <h3>Cargar ahorro</h3>
+      <form id="formAhorros" class="form-grid">
+        <label>Descripcion<input name="descripcion" placeholder="Ej: Dolares, Cripto" required></label>
+        <label>Moneda<input name="moneda" placeholder="ARS / USD" value="ARS"></label>
+        <label>Monto<input name="monto" type="number" step="0.01" placeholder="0.00" required></label>
+        <label>Fecha<input name="fecha" type="date" required></label>
+        <button type="submit">Agregar</button>
+      </form>
+    </div>
+    <div class="panel"><table class="tbl" id="tblAhorros"></table></div>
+  </section>
+
+</main>
+</div>
+
+<nav class="tabs-mobile" id="tabsMobile">
+  <button data-tab="resumen" class="tab active">Resumen</button>
+  <button data-tab="ingresos" class="tab">Ingresos</button>
+  <button data-tab="gastos" class="tab">Gastos</button>
+  <button data-tab="tarjetas" class="tab">Tarjetas</button>
+  <button data-tab="prestamos" class="tab">Prestamos</button>
+  <button data-tab="rapipago" class="tab">Rapipago</button>
+  <button data-tab="impuestos" class="tab">Impuestos</button>
+  <button data-tab="babypas" class="tab">Babypas</button>
+  <button data-tab="ahorros" class="tab">Ahorros</button>
+</nav>
+
+<script src="js/app.js"></script>
+</body>
+</html>
